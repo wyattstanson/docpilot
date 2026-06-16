@@ -1,0 +1,16 @@
+# Render blueprint — one-click deploy of the DocPilot dashboard.
+# In the Render dashboard: New → Blueprint → pick this repo → Apply.
+services:
+  - type: web
+    name: docpilot-dashboard
+    runtime: docker
+    dockerfilePath: ./deploy/Dockerfile
+    dockerContext: .
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /api/health
+    envVars:
+      - key: DOCPILOT_LLM_PROVIDER
+        value: mock
+      - key: DOCPILOT_EMBEDDING_PROVIDER
+        value: mock
