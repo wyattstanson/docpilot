@@ -1,0 +1,55 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Python: install (dev)",
+      "type": "shell",
+      "command": "pip install -e \".[dev]\"",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run tests",
+      "type": "shell",
+      "command": "python -m pytest -q --basetemp=.pytest_tmp",
+      "group": { "kind": "test", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start engine API",
+      "type": "shell",
+      "command": "python -m docpilot.server",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "panel": "dedicated", "group": "docpilot" }
+    },
+    {
+      "label": "Dashboard: install",
+      "type": "shell",
+      "command": "npm install",
+      "options": { "cwd": "${workspaceFolder}/dashboard" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Dashboard: dev",
+      "type": "shell",
+      "command": "npm run dev",
+      "options": { "cwd": "${workspaceFolder}/dashboard" },
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "panel": "dedicated", "group": "docpilot" }
+    },
+    {
+      "label": "Dashboard: build",
+      "type": "shell",
+      "command": "npm run build",
+      "options": { "cwd": "${workspaceFolder}/dashboard" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start full stack (API + Dashboard)",
+      "dependsOn": ["Start engine API", "Dashboard: dev"],
+      "dependsOrder": "parallel",
+      "problemMatcher": []
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    
+    {
+      "name": "Engine API server",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "docpilot.server",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "Action entrypoint (dry-run)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "docpilot.action.entrypoint",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": { "INPUT_LLM_PROVIDER": "mock" }
+    },
+    {
+      "name": "Demo: renamed_param",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "docpilot.cli",
+      "args": ["demo", "renamed_param"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Build mapping",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "docpilot.cli",
+      "args": ["build", "--code-paths", "docpilot", "--docs-paths", "README.md"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Python: Current File",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    }
+  ]
+}

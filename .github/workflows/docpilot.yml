@@ -1,0 +1,32 @@
+# Example workflow for consumers of the DocPilot Action.
+# Drop this into a repo at .github/workflows/docpilot.yml
+name: DocPilot
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - "lib/**"
+      - "docs/**"
+      - "README.md"
+
+permissions:
+  contents: write        # push fix branches
+  pull-requests: write   # open fix PRs and comment
+
+jobs:
+  docpilot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history so DocPilot can diff base..head
+
+      - name: Run DocPilot
+        uses: your-org/docpilot@v1
+        with:
+          llm_api_key: ${{ secrets.OPENAI_API_KEY }}
+          llm_provider: openai
+          confidence_threshold: "0.75"
+          docs_paths: "docs/,README.md"
+          code_paths: "src/,lib/"

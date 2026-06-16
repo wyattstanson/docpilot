@@ -1,0 +1,33 @@
+{
+  // --- Python ---------------------------------------------------------------
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  // --basetemp keeps pytest's temp files inside the project (avoids any
+  // permission issues with the system temp dir on Windows).
+  "python.testing.pytestArgs": ["tests", "--basetemp=.pytest_tmp"],
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.extraPaths": ["."],
+
+  // --- Editor ---------------------------------------------------------------
+  "editor.rulers": [100],
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.egg-info": true,
+    "**/.pytest_cache": true,
+    "**/.pytest_tmp": true,
+    ".docpilot/chroma": true
+  },
+
+  // --- Tailwind IntelliSense (so clay/sand/paper classes autocomplete) ------
+  "tailwindCSS.experimental.configFile": "dashboard/tailwind.config.js",
+  "css.validate": false,
+
+  // --- Formatting (optional, on save) --------------------------------------
+  "[python]": { "editor.formatOnSave": false },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

@@ -1,0 +1,10 @@
+.git
+.github
+.docpilot/chroma
+.pytest_cache
+.pytest_tmp
+**/__pycache__
+*.egg-info
+dashboard/node_modules
+dashboard/dist
+tests

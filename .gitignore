@@ -1,0 +1,24 @@
+# DocPilot generated artifacts
+.docpilot/
+.pytest_tmp*/
+.pytest_cache/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+
+# Node (dashboard)
+node_modules/
+dashboard/dist/
+dashboard/.vite/
+
+# Secrets / env — NEVER commit
+.env
+.env.*
+!.env.example
+*.local

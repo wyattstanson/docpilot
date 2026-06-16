@@ -1,0 +1,50 @@
+name: "DocPilot"
+description: "Self-healing technical documentation: detect stale docs on PRs and auto-fix or flag them."
+author: "DocPilot"
+branding:
+  icon: "book-open"
+  color: "purple"
+
+inputs:
+  llm_api_key:
+    description: "API key for the LLM/embedding provider (store as a secret)."
+    required: true
+  llm_provider:
+    description: "LLM provider: openai or anthropic."
+    required: false
+    default: "openai"
+  confidence_threshold:
+    description: "Minimum confidence to act on a finding (0-1)."
+    required: false
+    default: "0.75"
+  auto_merge:
+    description: "Auto-merge high-confidence fix PRs."
+    required: false
+    default: "false"
+  docs_paths:
+    description: "Comma-separated documentation paths."
+    required: false
+    default: "docs/,README.md"
+  code_paths:
+    description: "Comma-separated source paths."
+    required: false
+    default: "src/,lib/"
+
+outputs:
+  stale_sections_found:
+    description: "Number of documentation sections confirmed stale."
+  corrections_generated:
+    description: "Number of corrections generated (auto-fix + draft + flag)."
+  pr_url:
+    description: "URL of the fix PR, if one was created."
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  env:
+    INPUT_LLM_API_KEY: ${{ inputs.llm_api_key }}
+    INPUT_LLM_PROVIDER: ${{ inputs.llm_provider }}
+    INPUT_CONFIDENCE_THRESHOLD: ${{ inputs.confidence_threshold }}
+    INPUT_AUTO_MERGE: ${{ inputs.auto_merge }}
+    INPUT_DOCS_PATHS: ${{ inputs.docs_paths }}
+    INPUT_CODE_PATHS: ${{ inputs.code_paths }}
