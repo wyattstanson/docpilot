@@ -30,6 +30,17 @@ def test_audit_passes_consistent_docs(mock_config):
     assert r["inconsistent"] == 0
 
 
+def test_audit_unrelated_docs_report_no_overlap(mock_config):
+    # Docs that reference nothing in the code must report "no overlap",
+    # not a false "consistent".
+    code = "def verify_token(token, account_id):\n    return account_id\n"
+    docs = "# Banana Bread\n\n## Ingredients\n\nMix 3 bananas with flour and bake at 350.\n"
+    r = Pipeline(mock_config).audit("svc.py", code, docs)
+    assert r["auditable_sections"] == 0
+    assert r["links"] == 0
+    assert r["inconsistent"] == 0
+
+
 def test_audit_loose_parsing_without_headings(mock_config):
     # PDF-style prose with no markdown headings still produces sections.
     code = "def verify_token(token, account_id):\n    return account_id\n"

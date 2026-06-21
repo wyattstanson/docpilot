@@ -256,6 +256,10 @@ class Pipeline:
         result["code_chunks"] = len(chunks)
         result["doc_sections"] = len(sections)
         result["links"] = len(links)
+        # How many doc sections actually reference this code (and were thus
+        # auditable). Zero means the docs and code are unrelated — there was
+        # nothing to compare, which is NOT the same as "consistent".
+        result["auditable_sections"] = len({l.doc_section_id for l in links})
         return result
 
     @staticmethod

@@ -78,7 +78,8 @@ export default function LiveConsole() {
       const res = await api.audit(fd);
       res._audit = true;
       setResult(res);
-      if (res.inconsistent > 0) toast(`${res.inconsistent} inconsistent doc section(s)`, "warning");
+      if (res.auditable_sections === 0) toast("No overlap — these docs don't reference this code", "info");
+      else if (res.inconsistent > 0) toast(`${res.inconsistent} inconsistent doc section(s)`, "warning");
       else toast("Docs match the code", "success");
     } catch (e) {
       toast(e.message, "error");
@@ -257,19 +258,39 @@ function FilePicker({ label, accept, file, onPick }) {
 
 function AuditResult({ result }) {
   const findings = result.findings || [];
-  const clean = result.inconsistent === 0;
+  const noOverlap = (result.auditable_sections ?? 0) === 0;
+  const clean = !noOverlap && result.inconsistent === 0;
   return (
     <div className="animate-fade-in flex flex-col gap-4">
       <div className="flex flex-wrap items-center gap-2">
-        <span className={`chip ${clean ? "bg-sage/15 text-sage-soft border border-sage/40" : "bg-clay/15 text-clay-soft border border-clay/40"}`}>
-          {clean ? "Consistent" : `${result.inconsistent} inconsistent`}
+        <span
+          className={`chip ${
+            noOverlap
+              ? "bg-sand/15 text-sand-soft border border-sand/40"
+              : clean
+                ? "bg-sage/15 text-sage-soft border border-sage/40"
+                : "bg-clay/15 text-clay-soft border border-clay/40"
+          }`}
+        >
+          {noOverlap ? "No overlap" : clean ? "Consistent" : `${result.inconsistent} inconsistent`}
         </span>
         <span className="chip bg-paper-50/5 text-paper-400 border border-paper-50/15">
-          {result.sections_checked} sections · {result.code_chunks} symbols · {result.links} links
+          {result.auditable_sections ?? 0}/{result.sections_checked} auditable · {result.code_chunks} symbols · {result.links} links
         </span>
       </div>
 
-      {clean ? (
+      {noOverlap ? (
+        <div className="flex flex-col items-center justify-center gap-2 py-10 text-center">
+          <FileSearch size={28} className="text-sand-soft" />
+          <p className="text-sm text-paper-200">
+            These docs don't reference anything in this code, so there was nothing to audit.
+          </p>
+          <p className="max-w-xs text-xs text-paper-400">
+            Upload a docs file that actually describes the uploaded code (mentions its functions,
+            classes, config keys, or routes).
+          </p>
+        </div>
+      ) : clean ? (
         <div className="flex flex-col items-center justify-center gap-2 py-10 text-center">
           <CheckCircle2 size={28} className="text-sage-soft" />
           <p className="text-sm text-paper-200">The documentation matches the current code.</p>
